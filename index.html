@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopAgent · 跨境电商选品助手</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f4ff;
+  --white: #ffffff;
+  --primary: #ee4d2d;
+  --primary-light: #ff6b4a;
+  --primary-pale: #fff0ed;
+  --primary-pale2: #ffe0da;
+  --teal: #0d6efd;
+  --teal-pale: #e8f0fe;
+  --brown: #8b3a2a;
+  --text: #1a1a2e;
+  --text2: #4a4a6a;
+  --text3: #9a9ab0;
+  --border: rgba(26,26,46,0.08);
+  --border2: rgba(238,77,45,0.18);
+  --shadow: 0 2px 20px rgba(238,77,45,0.06);
+  --shadow2: 0 8px 40px rgba(26,26,46,0.10);
+  --mono: 'DM Mono', monospace;
+  --body: 'Noto Sans SC', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--body);background:var(--bg);color:var(--text);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 100% 0%,rgba(238,77,45,0.05) 0%,transparent 55%),radial-gradient(ellipse 40% 60% at 0% 100%,rgba(13,110,253,0.04) 0%,transparent 55%);pointer-events:none;z-index:0;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 48px;height:58px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;color:var(--primary);text-decoration:none;}
+.nav-badge{font-family:var(--mono);font-size:9px;background:var(--primary-pale);color:var(--primary);border:1px solid var(--border2);border-radius:10px;padding:3px 8px;margin-left:4px;}
+.nav-cta{padding:8px 20px;border-radius:8px;background:var(--primary);color:white;font-size:13px;font-weight:600;border:none;cursor:pointer;text-decoration:none;transition:all 0.2s;}
+.nav-cta:hover{background:var(--brown);transform:translateY(-1px);}
+
+/* HERO */
+.hero{max-width:1100px;margin:0 auto;padding:70px 48px 50px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;z-index:1;}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--primary-pale);border:1px solid var(--border2);border-radius:20px;padding:5px 14px;font-family:var(--mono);font-size:10px;color:var(--primary);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:20px;}
+.hero h1{font-size:44px;font-weight:700;line-height:1.2;color:var(--text);margin-bottom:16px;}
+.hero h1 span{color:var(--primary);}
+.hero p{font-size:14px;color:var(--text2);line-height:1.85;margin-bottom:28px;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-primary{padding:12px 26px;border-radius:10px;background:var(--primary);color:white;font-size:14px;font-weight:600;border:none;cursor:pointer;text-decoration:none;transition:all 0.22s;}
+.btn-primary:hover{background:var(--brown);transform:translateY(-2px);box-shadow:0 6px 20px rgba(238,77,45,0.3);}
+.btn-secondary{padding:12px 26px;border-radius:10px;background:white;color:var(--primary);font-size:14px;font-weight:600;border:1.5px solid var(--border2);cursor:pointer;text-decoration:none;transition:all 0.22s;}
+.btn-secondary:hover{border-color:var(--primary);background:var(--primary-pale);}
+
+/* Hero visual */
+.hero-visual{border-radius:20px;overflow:hidden;box-shadow:var(--shadow2);background:linear-gradient(135deg,#fff5f3 0%,#ffe8e3 50%,#ffd0c7 100%);aspect-ratio:4/3;position:relative;display:flex;align-items:center;justify-content:center;}
+.hero-market-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:24px;width:100%;}
+.market-card{background:rgba(255,255,255,0.85);border-radius:10px;padding:12px;text-align:center;backdrop-filter:blur(4px);}
+.market-flag{font-size:24px;margin-bottom:4px;}
+.market-name{font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.market-gmv{font-size:10px;color:var(--primary);font-family:var(--mono);}
+.hero-badge2{position:absolute;bottom:14px;right:14px;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);border-radius:10px;padding:8px 12px;box-shadow:0 2px 12px rgba(0,0,0,0.1);}
+.hb-t{font-family:var(--mono);font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;}
+.hb-v{font-size:14px;font-weight:700;color:var(--primary);}
+
+/* STATS */
+.stats{background:white;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 48px;display:flex;justify-content:center;gap:60px;flex-wrap:wrap;position:relative;z-index:1;}
+.stat{text-align:center;}
+.stat .sv{font-size:24px;font-weight:700;color:var(--primary);}
+.stat .sl{font-size:11px;color:var(--text3);margin-top:2px;}
+
+/* AGENT SECTION */
+.agent-section{max-width:960px;margin:56px auto;padding:0 48px;position:relative;z-index:1;}
+.section-header{text-align:center;margin-bottom:32px;}
+.section-header h2{font-size:28px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.section-header p{font-size:13px;color:var(--text2);line-height:1.7;}
+
+/* CHAT */
+.chat-container{background:white;border-radius:20px;border:1px solid var(--border);box-shadow:var(--shadow2);display:flex;flex-direction:column;min-height:560px;max-height:760px;overflow:hidden;}
+.chat-header{padding:14px 20px;border-bottom:1px solid var(--border);background:var(--primary-pale);display:flex;align-items:center;gap:12px;}
+.chat-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--primary-light),var(--brown));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.chat-header-info h3{font-size:13px;font-weight:700;color:var(--text);}
+.chat-header-info p{font-size:10px;color:var(--text3);margin-top:1px;}
+.agent-pill{margin-left:auto;display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--primary);background:rgba(238,77,45,0.08);border:1px solid rgba(238,77,45,0.15);border-radius:12px;padding:4px 10px;}
+.dot-live{width:6px;height:6px;border-radius:50%;background:var(--primary);animation:blink 1.2s ease infinite alternate;}
+@keyframes blink{to{opacity:0.2}}
+
+/* messages */
+.messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;}
+.messages::-webkit-scrollbar{width:4px;}
+.messages::-webkit-scrollbar-thumb{background:var(--primary-pale2);border-radius:2px;}
+.msg{display:flex;gap:10px;animation:msgIn 0.3s ease;}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{flex-direction:row-reverse;}
+.msg-avatar{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:2px;}
+.msg-avatar.agent{background:linear-gradient(135deg,var(--primary-light),var(--brown));}
+.msg-avatar.user{background:var(--primary-pale2);border:1px solid var(--border2);}
+.bubble{max-width:74%;padding:11px 15px;border-radius:14px;font-size:13px;line-height:1.75;}
+.msg.agent .bubble{background:#f8f9ff;border:1px solid var(--border);border-top-left-radius:4px;color:var(--text);}
+.msg.agent .bubble strong{color:var(--primary);}
+.msg.agent .bubble h2,.msg.agent .bubble h3{font-size:14px;font-weight:700;color:var(--text);margin:10px 0 6px;}
+.msg.agent .bubble ul,.msg.agent .bubble ol{padding-left:18px;margin:6px 0;}
+.msg.agent .bubble li{margin-bottom:3px;}
+.msg.user .bubble{background:var(--primary);color:white;border-top-right-radius:4px;}
+.agent-badge2{font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:8px;background:var(--primary-pale);border:1px solid var(--border2);color:var(--primary);margin-bottom:5px;display:inline-block;}
+.rag-tag{background:var(--teal-pale);color:var(--teal);border-color:rgba(13,110,253,0.2);margin-left:4px;}
+.thinking{display:flex;gap:5px;align-items:center;padding:12px 15px;}
+.thinking span{width:7px;height:7px;border-radius:50%;background:var(--primary-light);animation:tpulse 1.2s ease infinite;}
+.thinking span:nth-child(2){animation-delay:.2s}.thinking span:nth-child(3){animation-delay:.4s}
+@keyframes tpulse{0%,100%{opacity:0.2;transform:scale(0.8)}50%{opacity:1;transform:scale(1)}}
+
+/* input */
+.input-section{padding:12px 18px 16px;border-top:1px solid var(--border);}
+.hint-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.hint-chip{padding:5px 11px;border-radius:20px;background:var(--primary-pale);border:1px solid var(--border2);font-size:11px;color:var(--primary);cursor:pointer;transition:all 0.18s;font-weight:500;}
+.hint-chip:hover{background:var(--primary);color:white;border-color:var(--primary);}
+.input-row{display:flex;gap:10px;align-items:flex-end;background:#f8f9ff;border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;transition:border 0.2s;}
+.input-row:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px rgba(238,77,45,0.08);}
+#chatInput{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:var(--body);font-size:13px;resize:none;line-height:1.5;max-height:100px;min-height:22px;}
+#chatInput::placeholder{color:var(--text3);}
+.send-btn{width:34px;height:34px;border-radius:8px;background:var(--primary);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:white;font-weight:bold;transition:all 0.2s;flex-shrink:0;}
+.send-btn:hover{background:var(--brown);transform:scale(1.05);}
+
+/* features */
+.features-section{max-width:960px;margin:0 auto 50px;padding:0 48px;position:relative;z-index:1;}
+.features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.feat-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;transition:all 0.25s;}
+.feat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow2);border-color:var(--border2);}
+.feat-icon{font-size:24px;margin-bottom:10px;}
+.feat-card h3{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.feat-card p{font-size:11px;color:var(--text3);line-height:1.7;}
+
+footer{background:white;border-top:1px solid var(--border);padding:20px 48px;margin-top:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;position:relative;z-index:1;}
+.footer-left{font-size:14px;font-weight:700;color:var(--primary);}
+.footer-right{font-family:var(--mono);font-size:10px;color:var(--text3);}
+
+@media(max-width:900px){.hero{grid-template-columns:1fr;padding:48px 20px 36px;gap:28px;}.hero h1{font-size:32px;}.features-grid{grid-template-columns:1fr 1fr;}.agent-section,.features-section{padding:0 20px;}.stats{padding:14px 20px;gap:28px;}footer{padding:16px 20px;}nav{padding:0 20px;}}
+@media(max-width:600px){.features-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">🛍 ShopAgent<span class="nav-badge">Shopee · 东南亚</span></a>
+  <a class="nav-cta" href="#agent-section">开始选品 →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-tag">✦ Multi-Agent · RAG · DeepSeek-V3</div>
+    <h1>跨境电商<br><span>AI 选品</span><br>决策助手</h1>
+    <p>基于 LangGraph Multi-Agent 架构，由 Supervisor 动态路由至选品、定价、物流、风险四个专业 Agent，覆盖东南亚六大市场，提供数据驱动的选品决策支持。</p>
+    <div class="hero-btns">
+      <a class="btn-primary" href="#agent-section">立即咨询 →</a>
+      <a class="btn-secondary" href="#features">功能介绍 ↓</a>
+    </div>
+  </div>
+  <div>
+    <div class="hero-visual">
+      <div class="hero-market-grid">
+        <div class="market-card"><div class="market-flag">🇮🇩</div><div class="market-name">印尼</div><div class="market-gmv">最大市场</div></div>
+        <div class="market-card"><div class="market-flag">🇹🇭</div><div class="market-name">泰国</div><div class="market-gmv">消费力强</div></div>
+        <div class="market-card"><div class="market-flag">🇻🇳</div><div class="market-name">越南</div><div class="market-gmv">增速最快</div></div>
+        <div class="market-card"><div class="market-flag">🇲🇾</div><div class="market-name">马来西亚</div><div class="market-gmv">品质消费</div></div>
+        <div class="market-card"><div class="market-flag">🇵🇭</div><div class="market-name">菲律宾</div><div class="market-gmv">直播活跃</div></div>
+        <div class="market-card"><div class="market-flag">🇸🇬</div><div class="market-name">新加坡</div><div class="market-gmv">客单最高</div></div>
+      </div>
+      <div class="hero-badge2">
+        <div class="hb-t">Coverage</div>
+        <div class="hb-v">6 Markets</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="sv">3亿+</div><div class="sl">Shopee 月活用户</div></div>
+  <div class="stat"><div class="sv">4 Agents</div><div class="sl">专业决策节点</div></div>
+  <div class="stat"><div class="sv">RAG</div><div class="sl">知识库检索增强</div></div>
+  <div class="stat"><div class="sv">6市场</div><div class="sl">东南亚全覆盖</div></div>
+</div>
+
+<!-- AGENT CHAT -->
+<section class="agent-section" id="agent-section">
+  <div class="section-header">
+    <h2>AI 选品决策咨询</h2>
+    <p>Supervisor Agent 自动识别意图，动态路由至最合适的专业 Agent</p>
+  </div>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      <div class="chat-avatar">🛍</div>
+      <div class="chat-header-info">
+        <h3>ShopAgent · 跨境电商 AI 助手</h3>
+        <p>LangGraph Multi-Agent · ChromaDB RAG · DeepSeek-V3</p>
+      </div>
+      <div class="agent-pill">
+        <div class="dot-live"></div>
+        <span id="agentLabel">Supervisor</span>
+      </div>
+    </div>
+
+    <div class="messages" id="messages">
+      <div class="msg agent">
+        <div class="msg-avatar agent">🛍</div>
+        <div>
+          <div class="bubble">
+            您好！我是 <strong>ShopAgent</strong>，专注东南亚跨境电商的 AI 选品决策助手。<br><br>
+            我由 <strong>Supervisor Agent</strong> 统一调度，根据您的问题自动分配专业 Agent：<br><br>
+            🛍 <strong>选品 Agent</strong> · 热销品类分析与选品推荐<br>
+            💰 <strong>定价 Agent</strong> · 成本核算与定价策略<br>
+            🚚 <strong>物流 Agent</strong> · 物流方案与运费估算<br>
+            ⚠️ <strong>风险 Agent</strong> · 合规风险与关税政策<br><br>
+            请告诉我您想做什么产品，或者有什么跨境电商问题？
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-section">
+      <div class="hint-chips">
+        <div class="hint-chip" onclick="fill('我想做美妆产品，推荐哪个东南亚市场？')">🛍 选品推荐</div>
+        <div class="hint-chip" onclick="fill('进货价30元的产品在Shopee怎么定价？')">💰 定价策略</div>
+        <div class="hint-chip" onclick="fill('从深圳发货到印尼选什么物流？')">🚚 物流方案</div>
+        <div class="hint-chip" onclick="fill('美妆产品在泰国销售需要什么认证？')">⚠️ 合规风险</div>
+        <div class="hint-chip" onclick="fill('新手做Shopee跨境从哪个品类入手？')">🌟 新手入门</div>
+      </div>
+      <div class="input-row">
+        <textarea id="chatInput" placeholder="输入您的选品问题，比如：我想做家居厨房产品，预算1万元..." rows="1"></textarea>
+        <button class="send-btn" id="sendBtn">↑</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="section-header" style="margin-bottom:24px;">
+    <h2>核心功能</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card"><div class="feat-icon">🛍</div><h3>智能选品</h3><p>分析东南亚六大市场热销品类，结合利润率、竞争度给出选品建议。</p></div>
+    <div class="feat-card"><div class="feat-icon">💰</div><h3>定价策略</h3><p>拆解成本结构（进货+运费+佣金+推广），自动计算建议定价与利润率。</p></div>
+    <div class="feat-card"><div class="feat-icon">🚚</div><h3>物流方案</h3><p>对比直邮与海外仓方案，推荐适合的物流商与运费参考。</p></div>
+    <div class="feat-card"><div class="feat-icon">⚠️</div><h3>风险合规</h3><p>提示各国关税政策、禁售品类、所需认证，帮助规避合规风险。</p></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">🛍 ShopAgent · 跨境电商 AI 选品助手</div>
+  <div class="footer-right">LangGraph · ChromaDB · DeepSeek-V3 · FastAPI · 硅基流动</div>
+</footer>
+
+<script>
+const BACKEND_URL = 'http://localhost:8001';
+
+const messagesEl = document.getElementById('messages');
+const chatInput = document.getElementById('chatInput');
+let history = [];
+
+chatInput.addEventListener('input', () => {
+  chatInput.style.height = 'auto';
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 100) + 'px';
+});
+chatInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+});
+document.getElementById('sendBtn').addEventListener('click', send);
+function fill(t) { chatInput.value = t; chatInput.focus(); document.getElementById('agent-section').scrollIntoView({behavior:'smooth'}); }
+
+function sanitize(text) {
+  return text
+    .replace(/## (.*)/g, '<h3>$1</h3>')
+    .replace(/### (.*)/g, '<h3>$1</h3>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^- (.*)/gm, '<li>$1</li>')
+    .replace(/^\d+\. (.*)/gm, '<li>$1</li>')
+    .replace(/(<li>.*?<\/li>)/gs, '<ul>$1</ul>')
+    .replace(/\n{2,}/g, '<br><br>')
+    .replace(/\n/g, '<br>')
+    .replace(/[\uFE0F\u200D]/g, '');
+}
+
+function addMsg(role, html, badge='', isRag=false) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  const avatar = role === 'agent' ? '🛍' : '👤';
+  const badgeHTML = badge ? `<div><span class="agent-badge2">${badge}</span>${isRag ? '<span class="agent-badge2 rag-tag">📚 RAG</span>' : ''}</div>` : '';
+  div.innerHTML = `<div class="msg-avatar ${role}">${avatar}</div><div>${badgeHTML}<div class="bubble ${role}">${html}</div></div>`;
+  messagesEl.appendChild(div);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function addThinking() {
+  const div = document.createElement('div'); div.className = 'msg agent'; div.id = 'thinking';
+  div.innerHTML = `<div class="msg-avatar agent">🛍</div><div class="bubble agent"><div class="thinking"><span></span><span></span><span></span></div></div>`;
+  messagesEl.appendChild(div); messagesEl.scrollTop = messagesEl.scrollHeight;
+  return div;
+}
+
+async function send() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  chatInput.value = ''; chatInput.style.height = 'auto';
+
+  // 移除欢迎消息
+  const welcome = messagesEl.querySelector('.msg.agent');
+  if (welcome && history.length === 0) welcome.remove();
+
+  addMsg('user', text);
+  const thinkEl = addThinking();
+  document.getElementById('agentLabel').textContent = '思考中...';
+
+  try {
+    const resp = await fetch(BACKEND_URL + '/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text, history })
+    });
+    const data = await resp.json();
+
+    history.push({ role: 'user', content: text });
+    history.push({ role: 'assistant', content: data.response.slice(0, 300) });
+    if (history.length > 20) history = history.slice(-20);
+
+    thinkEl.remove();
+    document.getElementById('agentLabel').textContent = data.agent || 'Agent';
+    addMsg('agent', sanitize(data.response), data.agent, data.has_rag);
+
+  } catch(e) {
+    thinkEl.remove();
+    document.getElementById('agentLabel').textContent = 'Error';
+    addMsg('agent', '⚠ 连接后端失败，请确认后端服务已启动。<br>运行：<code>start.bat</code>（端口8001）');
+  }
+}
+</script>
+</body>
+</html>
