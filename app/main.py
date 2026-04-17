@@ -44,7 +44,7 @@ kb_version = {"version": 1, "updated_at": datetime.now().isoformat()}
 
 # ── Embedding ─────────────────────────────────────────────
 async def get_embedding(text: str) -> list:
-    async with httpx.AsyncClient(timeout=20) as client:
+    async with httpx.AsyncClient(timeout=60) as client:
         resp = await client.post(
             EMBED_URL,
             headers={"Authorization": f"Bearer {SILICONFLOW_KEY}"},
@@ -54,7 +54,7 @@ async def get_embedding(text: str) -> list:
 
 # ── LLM ───────────────────────────────────────────────────
 async def llm(system: str, user: str, max_tokens: int = 1000) -> str:
-    async with httpx.AsyncClient(timeout=30) as client:
+    async with httpx.AsyncClient(timeout=60) as client:
         resp = await client.post(
             API_URL,
             headers={"Authorization": f"Bearer {SILICONFLOW_KEY}", "Content-Type": "application/json"},
