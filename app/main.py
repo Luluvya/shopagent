@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import os, httpx, asyncio, json, hashlib
+import os, httpx, json, hashlib
 from datetime import datetime
 from typing import TypedDict, Annotated
 
@@ -53,7 +53,7 @@ async def get_embedding(text: str) -> list:
         return resp.json()["data"][0]["embedding"]
 
 # ── LLM ───────────────────────────────────────────────────
-async def llm(system: str, user: str, max_tokens: int = 1000) -> str:
+async def llm(system: str, user: str, max_tokens: int = 1500) -> str:
     async with httpx.AsyncClient(timeout=60) as client:
         resp = await client.post(
             API_URL,
@@ -108,11 +108,14 @@ class ShopState(TypedDict):
     intent: str
     user_input: str
     product_result: str
+    product_cards: list
     pricing_result: str
+    pricing_cards: list
     logistics_result: str
     risk_result: str
     general_result: str
     final_response: str
+    final_cards: list
     has_rag: bool
     history: list
 
@@ -140,43 +143,118 @@ general    - 打招呼、其他问题""",
 # ── Product Agent ─────────────────────────────────────────
 async def product_node(state: ShopState) -> ShopState:
     context = await retrieve(state["user_input"] + " 热销品类 利润")
-    sys = f"""你是专业的 Shopee 东南亚跨境电商选品顾问。
+
+    # 获取结构化卡片数据
+    card_raw = await llm(
+        f"""你是专业的 Shopee 东南亚跨境电商选品顾问。
 {'参考知识库：\n' + context if context else ''}
-根据用户需求推荐适合的选品方向，包含：
-## 推荐品类
-品类名称、热销程度（⭐评级）、平均利润率、主要市场
 
-## 选品理由
-为什么适合、目标用户群体、市场需求分析
+根据用户需求推荐3个选品方向，严格按以下JSON格式返回，不要其他文字：
+{{
+  "cards": [
+    {{
+      "name": "品类名称",
+      "stars": "⭐⭐⭐⭐",
+      "profit": "30-50%",
+      "market": "泰国/印尼",
+      "price": "进货价10-20元",
+      "competition": "中等",
+      "reason": "适合原因一句话"
+    }}
+  ],
+  "summary": "整体选品建议摘要，2-3句话"
+}}""",
+        state["user_input"],
+        max_tokens=1000
+    )
 
-## 进货建议
-推荐货源渠道、参考进货价区间
+    # 解析JSON
+    cards = []
+    summary = ""
+    try:
+        clean = card_raw.strip().replace("```json", "").replace("```", "").strip()
+        parsed = json.loads(clean)
+        cards = parsed.get("cards", [])
+        summary = parsed.get("summary", "")
+    except Exception:
+        pass
 
-## 竞争分析
-竞争程度、差异化建议
+    # 如果解析失败，退回普通文本
+    if not cards:
+        result = await llm(
+            f"""你是专业的 Shopee 东南亚跨境电商选品顾问。
+{'参考知识库：\n' + context if context else ''}
+根据用户需求推荐适合的选品方向，包含品类名称、热销程度、利润率、主要市场、进货建议、竞争分析。
+用专业友好的中文回答，数据具体。""",
+            state["user_input"]
+        )
+        return {**state, "product_result": result, "product_cards": [], "has_rag": bool(context)}
 
-用专业友好的中文回答，数据具体，有参考价值。"""
-    result = await llm(sys, state["user_input"])
-    return {**state, "product_result": result, "has_rag": bool(context)}
+    return {**state, "product_result": summary, "product_cards": cards, "has_rag": bool(context)}
 
 # ── Pricing Agent ─────────────────────────────────────────
 async def pricing_node(state: ShopState) -> ShopState:
     context = await retrieve(state["user_input"] + " 定价 成本 利润")
-    sys = f"""你是跨境电商定价策略专家。
+
+    # 获取结构化卡片数据
+    card_raw = await llm(
+        f"""你是跨境电商定价策略专家。
 {'参考知识库：\n' + context if context else ''}
-根据用户描述给出定价建议，包含：
-## 成本拆解
-进货成本、头程运费、平台佣金（约3-7%）、推广费（约5-8%）、退货损耗
 
-## 建议定价
-低/中/高客单价方案，各方案的利润率
+根据用户描述给出低/中/高三个定价方案，严格按以下JSON格式返回，不要其他文字：
+{{
+  "cards": [
+    {{
+      "name": "冲量定价",
+      "price": "售价区间",
+      "profit_rate": "利润率",
+      "cost": "进货成本估算",
+      "commission": "平台佣金约X%",
+      "strategy": "适用场景一句话"
+    }},
+    {{
+      "name": "平衡定价",
+      "price": "售价区间",
+      "profit_rate": "利润率",
+      "cost": "进货成本估算",
+      "commission": "平台佣金约X%",
+      "strategy": "适用场景一句话"
+    }},
+    {{
+      "name": "利润定价",
+      "price": "售价区间",
+      "profit_rate": "利润率",
+      "cost": "进货成本估算",
+      "commission": "平台佣金约X%",
+      "strategy": "适用场景一句话"
+    }}
+  ],
+  "summary": "定价建议摘要，2-3句话"
+}}""",
+        state["user_input"],
+        max_tokens=1000
+    )
 
-## 定价策略
-新店冲量定价 vs 成熟店利润定价，如何参考竞品定价
+    cards = []
+    summary = ""
+    try:
+        clean = card_raw.strip().replace("```json", "").replace("```", "").strip()
+        parsed = json.loads(clean)
+        cards = parsed.get("cards", [])
+        summary = parsed.get("summary", "")
+    except Exception:
+        pass
 
-数据要具体，给出计算示例。"""
-    result = await llm(sys, state["user_input"])
-    return {**state, "pricing_result": result, "has_rag": bool(context)}
+    if not cards:
+        result = await llm(
+            f"""你是跨境电商定价策略专家。
+{'参考知识库：\n' + context if context else ''}
+根据用户描述给出定价建议，包含成本拆解、低中高三个方案的利润率、定价策略。数据要具体。""",
+            state["user_input"]
+        )
+        return {**state, "pricing_result": result, "pricing_cards": [], "has_rag": bool(context)}
+
+    return {**state, "pricing_result": summary, "pricing_cards": cards, "has_rag": bool(context)}
 
 # ── Logistics Agent ───────────────────────────────────────
 async def logistics_node(state: ShopState) -> ShopState:
@@ -244,7 +322,8 @@ async def synthesis_node(state: ShopState) -> ShopState:
         state.get("general_result") or
         "抱歉，我暂时无法回答这个问题。"
     )
-    return {**state, "final_response": response}
+    cards = state.get("product_cards") or state.get("pricing_cards") or []
+    return {**state, "final_response": response, "final_cards": cards}
 
 # ── Build Graph ───────────────────────────────────────────
 def build_graph():
@@ -288,7 +367,6 @@ class ChatRequest(BaseModel):
 
 @app.post("/chat")
 async def chat(req: ChatRequest):
-    # 缓存命中
     if not req.history:
         cached = cache_get(req.message)
         if cached:
@@ -297,15 +375,17 @@ async def chat(req: ChatRequest):
     state: ShopState = {
         "messages": [HumanMessage(content=req.message)],
         "intent": "", "user_input": req.message,
-        "product_result": "", "pricing_result": "",
+        "product_result": "", "product_cards": [],
+        "pricing_result": "", "pricing_cards": [],
         "logistics_result": "", "risk_result": "",
         "general_result": "", "final_response": "",
-        "has_rag": False, "history": req.history,
+        "final_cards": [], "has_rag": False, "history": req.history,
     }
     result = await graph.ainvoke(state)
     intent = result.get("intent", "general")
     data = {
         "response": result.get("final_response", ""),
+        "cards": result.get("final_cards", []),
         "intent": intent,
         "agent": AGENT_LABELS.get(intent, "🤖"),
         "has_rag": result.get("has_rag", False),
