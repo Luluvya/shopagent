@@ -31,14 +31,12 @@ html{scroll-behavior:smooth;}
 body{font-family:var(--body);background:var(--bg);color:var(--text);min-height:100vh;}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 100% 0%,rgba(238,77,45,0.05) 0%,transparent 55%),radial-gradient(ellipse 40% 60% at 0% 100%,rgba(13,110,253,0.04) 0%,transparent 55%);pointer-events:none;z-index:0;}
 
-/* NAV */
 nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 48px;height:58px;display:flex;align-items:center;justify-content:space-between;}
 .nav-logo{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;color:var(--primary);text-decoration:none;}
 .nav-badge{font-family:var(--mono);font-size:9px;background:var(--primary-pale);color:var(--primary);border:1px solid var(--border2);border-radius:10px;padding:3px 8px;margin-left:4px;}
 .nav-cta{padding:8px 20px;border-radius:8px;background:var(--primary);color:white;font-size:13px;font-weight:600;border:none;cursor:pointer;text-decoration:none;transition:all 0.2s;}
 .nav-cta:hover{background:var(--brown);transform:translateY(-1px);}
 
-/* HERO */
 .hero{max-width:1100px;margin:0 auto;padding:70px 48px 50px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;z-index:1;}
 .hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--primary-pale);border:1px solid var(--border2);border-radius:20px;padding:5px 14px;font-family:var(--mono);font-size:10px;color:var(--primary);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:20px;}
 .hero h1{font-size:44px;font-weight:700;line-height:1.2;color:var(--text);margin-bottom:16px;}
@@ -50,7 +48,6 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.94);backdrop
 .btn-secondary{padding:12px 26px;border-radius:10px;background:white;color:var(--primary);font-size:14px;font-weight:600;border:1.5px solid var(--border2);cursor:pointer;text-decoration:none;transition:all 0.22s;}
 .btn-secondary:hover{border-color:var(--primary);background:var(--primary-pale);}
 
-/* Hero visual */
 .hero-visual{border-radius:20px;overflow:hidden;box-shadow:var(--shadow2);background:linear-gradient(135deg,#fff5f3 0%,#ffe8e3 50%,#ffd0c7 100%);aspect-ratio:4/3;position:relative;display:flex;align-items:center;justify-content:center;}
 .hero-market-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:24px;width:100%;}
 .market-card{background:rgba(255,255,255,0.85);border-radius:10px;padding:12px;text-align:center;backdrop-filter:blur(4px);}
@@ -61,19 +58,16 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.94);backdrop
 .hb-t{font-family:var(--mono);font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;}
 .hb-v{font-size:14px;font-weight:700;color:var(--primary);}
 
-/* STATS */
 .stats{background:white;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 48px;display:flex;justify-content:center;gap:60px;flex-wrap:wrap;position:relative;z-index:1;}
 .stat{text-align:center;}
 .stat .sv{font-size:24px;font-weight:700;color:var(--primary);}
 .stat .sl{font-size:11px;color:var(--text3);margin-top:2px;}
 
-/* AGENT SECTION */
 .agent-section{max-width:960px;margin:56px auto;padding:0 48px;position:relative;z-index:1;}
 .section-header{text-align:center;margin-bottom:32px;}
 .section-header h2{font-size:28px;font-weight:700;color:var(--text);margin-bottom:8px;}
 .section-header p{font-size:13px;color:var(--text2);line-height:1.7;}
 
-/* CHAT */
 .chat-container{background:white;border-radius:20px;border:1px solid var(--border);box-shadow:var(--shadow2);display:flex;flex-direction:column;min-height:560px;max-height:760px;overflow:hidden;}
 .chat-header{padding:14px 20px;border-bottom:1px solid var(--border);background:var(--primary-pale);display:flex;align-items:center;gap:12px;}
 .chat-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--primary-light),var(--brown));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
@@ -83,7 +77,6 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.94);backdrop
 .dot-live{width:6px;height:6px;border-radius:50%;background:var(--primary);animation:blink 1.2s ease infinite alternate;}
 @keyframes blink{to{opacity:0.2}}
 
-/* messages */
 .messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;}
 .messages::-webkit-scrollbar{width:4px;}
 .messages::-webkit-scrollbar-thumb{background:var(--primary-pale2);border-radius:2px;}
@@ -93,13 +86,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.94);backdrop
 .msg-avatar{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:2px;}
 .msg-avatar.agent{background:linear-gradient(135deg,var(--primary-light),var(--brown));}
 .msg-avatar.user{background:var(--primary-pale2);border:1px solid var(--border2);}
-.bubble{max-width:74%;padding:11px 15px;border-radius:14px;font-size:13px;line-height:1.75;}
+.bubble{max-width:88%;padding:11px 15px;border-radius:14px;font-size:13px;line-height:1.75;}
 .msg.agent .bubble{background:#f8f9ff;border:1px solid var(--border);border-top-left-radius:4px;color:var(--text);}
 .msg.agent .bubble strong{color:var(--primary);}
 .msg.agent .bubble h2,.msg.agent .bubble h3{font-size:14px;font-weight:700;color:var(--text);margin:10px 0 6px;}
 .msg.agent .bubble ul,.msg.agent .bubble ol{padding-left:18px;margin:6px 0;}
 .msg.agent .bubble li{margin-bottom:3px;}
-.msg.user .bubble{background:var(--primary);color:white;border-top-right-radius:4px;}
+.msg.user .bubble{background:var(--primary);color:white;border-top-right-radius:4px;max-width:74%;}
 .agent-badge2{font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:8px;background:var(--primary-pale);border:1px solid var(--border2);color:var(--primary);margin-bottom:5px;display:inline-block;}
 .rag-tag{background:var(--teal-pale);color:var(--teal);border-color:rgba(13,110,253,0.2);margin-left:4px;}
 .thinking{display:flex;gap:5px;align-items:center;padding:12px 15px;}
@@ -107,7 +100,6 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.94);backdrop
 .thinking span:nth-child(2){animation-delay:.2s}.thinking span:nth-child(3){animation-delay:.4s}
 @keyframes tpulse{0%,100%{opacity:0.2;transform:scale(0.8)}50%{opacity:1;transform:scale(1)}}
 
-/* input */
 .input-section{padding:12px 18px 16px;border-top:1px solid var(--border);}
 .hint-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
 .hint-chip{padding:5px 11px;border-radius:20px;background:var(--primary-pale);border:1px solid var(--border2);font-size:11px;color:var(--primary);cursor:pointer;transition:all 0.18s;font-weight:500;}
@@ -119,7 +111,23 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.94);backdrop
 .send-btn{width:34px;height:34px;border-radius:8px;background:var(--primary);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:white;font-weight:bold;transition:all 0.2s;flex-shrink:0;}
 .send-btn:hover{background:var(--brown);transform:scale(1.05);}
 
-/* features */
+/* ── 对比卡片 ── */
+.cards-wrap{width:100%;margin:10px 0 4px;}
+.cards-grid{display:grid;gap:10px;margin-bottom:8px;}
+.cards-grid.product{grid-template-columns:repeat(3,1fr);}
+.cards-grid.pricing{grid-template-columns:repeat(3,1fr);}
+.comp-card{background:white;border:1px solid var(--border2);border-radius:12px;padding:14px;transition:all 0.2s;}
+.comp-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(238,77,45,0.12);}
+.comp-card .card-name{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:8px;}
+.comp-card .card-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;padding:3px 0;border-bottom:1px solid var(--border);}
+.comp-card .card-row:last-of-type{border-bottom:none;}
+.comp-card .card-label{color:var(--text3);}
+.comp-card .card-val{color:var(--text);font-weight:500;text-align:right;max-width:55%;}
+.comp-card .card-stars{color:#f59e0b;font-size:12px;}
+.comp-card .card-reason{font-size:11px;color:var(--text2);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);line-height:1.5;}
+.cards-summary{font-size:12px;color:var(--text2);line-height:1.7;padding:8px 12px;background:var(--primary-pale);border-radius:8px;border-left:3px solid var(--primary);}
+@media(max-width:700px){.cards-grid.product,.cards-grid.pricing{grid-template-columns:1fr;}}
+
 .features-section{max-width:960px;margin:0 auto 50px;padding:0 48px;position:relative;z-index:1;}
 .features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
 .feat-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;transition:all 0.25s;}
@@ -143,12 +151,11 @@ footer{background:white;border-top:1px solid var(--border);padding:20px 48px;mar
   <a class="nav-cta" href="#agent-section">开始选品 →</a>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div>
     <div class="hero-tag">✦ Multi-Agent · RAG · DeepSeek-V3</div>
     <h1>跨境电商<br><span>AI 选品</span><br>决策助手</h1>
-    <p>基于 LangGraph Multi-Agent 架构，由 Supervisor 动态路由至选品、定价、物流、风险四个专业 Agent，覆盖东南亚六大市场，提供数据驱动的选品决策支持。</p>
+    <p>基于 LangGraph Multi-Agent 架构，由 Supervisor 动态路由至选品、定价、物流、风险四个专业 Agent，覆盖东南亚六大市场，以对比卡片与策略摘要形式输出结构化决策建议。</p>
     <div class="hero-btns">
       <a class="btn-primary" href="#agent-section">立即咨询 →</a>
       <a class="btn-secondary" href="#features">功能介绍 ↓</a>
@@ -172,15 +179,13 @@ footer{background:white;border-top:1px solid var(--border);padding:20px 48px;mar
   </div>
 </section>
 
-<!-- STATS -->
 <div class="stats">
   <div class="stat"><div class="sv">3亿+</div><div class="sl">Shopee 月活用户</div></div>
   <div class="stat"><div class="sv">4 Agents</div><div class="sl">专业决策节点</div></div>
-  <div class="stat"><div class="sv">RAG</div><div class="sl">知识库检索增强</div></div>
+  <div class="stat"><div class="sv">对比卡片</div><div class="sl">结构化方案输出</div></div>
   <div class="stat"><div class="sv">6市场</div><div class="sl">东南亚全覆盖</div></div>
 </div>
 
-<!-- AGENT CHAT -->
 <section class="agent-section" id="agent-section">
   <div class="section-header">
     <h2>AI 选品决策咨询</h2>
@@ -192,7 +197,7 @@ footer{background:white;border-top:1px solid var(--border);padding:20px 48px;mar
       <div class="chat-avatar">🛍</div>
       <div class="chat-header-info">
         <h3>ShopAgent · 跨境电商 AI 助手</h3>
-        <p>LangGraph Multi-Agent · ChromaDB RAG · DeepSeek-V3</p>
+        <p>LangGraph Multi-Agent · ChromaDB RAG · 对比卡片 · DeepSeek-V3</p>
       </div>
       <div class="agent-pill">
         <div class="dot-live"></div>
@@ -207,8 +212,8 @@ footer{background:white;border-top:1px solid var(--border);padding:20px 48px;mar
           <div class="bubble">
             您好！我是 <strong>ShopAgent</strong>，专注东南亚跨境电商的 AI 选品决策助手。<br><br>
             我由 <strong>Supervisor Agent</strong> 统一调度，根据您的问题自动分配专业 Agent：<br><br>
-            🛍 <strong>选品 Agent</strong> · 热销品类分析与选品推荐<br>
-            💰 <strong>定价 Agent</strong> · 成本核算与定价策略<br>
+            🛍 <strong>选品 Agent</strong> · 热销品类对比卡片 + 选品建议<br>
+            💰 <strong>定价 Agent</strong> · 低/中/高方案定价卡片 + 利润分析<br>
             🚚 <strong>物流 Agent</strong> · 物流方案与运费估算<br>
             ⚠️ <strong>风险 Agent</strong> · 合规风险与关税政策<br><br>
             请告诉我您想做什么产品，或者有什么跨境电商问题？
@@ -233,14 +238,13 @@ footer{background:white;border-top:1px solid var(--border);padding:20px 48px;mar
   </div>
 </section>
 
-<!-- FEATURES -->
 <section class="features-section" id="features">
   <div class="section-header" style="margin-bottom:24px;">
     <h2>核心功能</h2>
   </div>
   <div class="features-grid">
-    <div class="feat-card"><div class="feat-icon">🛍</div><h3>智能选品</h3><p>分析东南亚六大市场热销品类，结合利润率、竞争度给出选品建议。</p></div>
-    <div class="feat-card"><div class="feat-icon">💰</div><h3>定价策略</h3><p>拆解成本结构（进货+运费+佣金+推广），自动计算建议定价与利润率。</p></div>
+    <div class="feat-card"><div class="feat-icon">🛍</div><h3>智能选品</h3><p>分析东南亚六大市场热销品类，以对比卡片形式展示利润率、竞争度、市场分布。</p></div>
+    <div class="feat-card"><div class="feat-icon">💰</div><h3>定价策略</h3><p>拆解成本结构，输出低/中/高三档定价方案卡片，直观对比利润率与适用场景。</p></div>
     <div class="feat-card"><div class="feat-icon">🚚</div><h3>物流方案</h3><p>对比直邮与海外仓方案，推荐适合的物流商与运费参考。</p></div>
     <div class="feat-card"><div class="feat-icon">⚠️</div><h3>风险合规</h3><p>提示各国关税政策、禁售品类、所需认证，帮助规避合规风险。</p></div>
   </div>
@@ -281,12 +285,61 @@ function sanitize(text) {
     .replace(/[\uFE0F\u200D]/g, '');
 }
 
-function addMsg(role, html, badge='', isRag=false) {
+// ── 选品对比卡片 ──
+function renderProductCards(cards, summary) {
+  let html = '<div class="cards-wrap"><div class="cards-grid product">';
+  cards.forEach(c => {
+    html += `<div class="comp-card">
+      <div class="card-name">${c.name || ''}</div>
+      <div class="card-row"><span class="card-label">热销程度</span><span class="card-stars">${c.stars || ''}</span></div>
+      <div class="card-row"><span class="card-label">平均利润率</span><span class="card-val">${c.profit || ''}</span></div>
+      <div class="card-row"><span class="card-label">主要市场</span><span class="card-val">${c.market || ''}</span></div>
+      <div class="card-row"><span class="card-label">参考进货价</span><span class="card-val">${c.price || ''}</span></div>
+      <div class="card-row"><span class="card-label">竞争程度</span><span class="card-val">${c.competition || ''}</span></div>
+      ${c.reason ? `<div class="card-reason">${c.reason}</div>` : ''}
+    </div>`;
+  });
+  html += '</div>';
+  if (summary) html += `<div class="cards-summary">${summary}</div>`;
+  html += '</div>';
+  return html;
+}
+
+// ── 定价对比卡片 ──
+function renderPricingCards(cards, summary) {
+  const colors = ['#16a34a', '#2563eb', '#9333ea'];
+  let html = '<div class="cards-wrap"><div class="cards-grid pricing">';
+  cards.forEach((c, i) => {
+    html += `<div class="comp-card" style="border-top:3px solid ${colors[i] || '#ee4d2d'}">
+      <div class="card-name" style="color:${colors[i] || 'var(--primary)'};">${c.name || ''}</div>
+      <div class="card-row"><span class="card-label">建议售价</span><span class="card-val">${c.price || ''}</span></div>
+      <div class="card-row"><span class="card-label">利润率</span><span class="card-val">${c.profit_rate || ''}</span></div>
+      <div class="card-row"><span class="card-label">进货成本</span><span class="card-val">${c.cost || ''}</span></div>
+      <div class="card-row"><span class="card-label">平台佣金</span><span class="card-val">${c.commission || ''}</span></div>
+      ${c.strategy ? `<div class="card-reason">${c.strategy}</div>` : ''}
+    </div>`;
+  });
+  html += '</div>';
+  if (summary) html += `<div class="cards-summary">${summary}</div>`;
+  html += '</div>';
+  return html;
+}
+
+function addMsg(role, html, badge='', isRag=false, cards=[], intent='') {
   const div = document.createElement('div');
   div.className = 'msg ' + role;
   const avatar = role === 'agent' ? '🛍' : '👤';
   const badgeHTML = badge ? `<div><span class="agent-badge2">${badge}</span>${isRag ? '<span class="agent-badge2 rag-tag">📚 RAG</span>' : ''}</div>` : '';
-  div.innerHTML = `<div class="msg-avatar ${role}">${avatar}</div><div>${badgeHTML}<div class="bubble ${role}">${html}</div></div>`;
+
+  // 渲染卡片
+  let cardHTML = '';
+  if (cards && cards.length > 0) {
+    if (intent === 'product') cardHTML = renderProductCards(cards, html);
+    else if (intent === 'pricing') cardHTML = renderPricingCards(cards, html);
+  }
+
+  const contentHTML = cardHTML || `<div class="bubble ${role}">${html}</div>`;
+  div.innerHTML = `<div class="msg-avatar ${role}">${avatar}</div><div style="max-width:88%">${badgeHTML}${contentHTML}</div>`;
   messagesEl.appendChild(div);
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
@@ -303,7 +356,6 @@ async function send() {
   if (!text) return;
   chatInput.value = ''; chatInput.style.height = 'auto';
 
-  // 移除欢迎消息
   const welcome = messagesEl.querySelector('.msg.agent');
   if (welcome && history.length === 0) welcome.remove();
 
@@ -325,12 +377,12 @@ async function send() {
 
     thinkEl.remove();
     document.getElementById('agentLabel').textContent = data.agent || 'Agent';
-    addMsg('agent', sanitize(data.response), data.agent, data.has_rag);
+    addMsg('agent', sanitize(data.response), data.agent, data.has_rag, data.cards || [], data.intent || '');
 
   } catch(e) {
     thinkEl.remove();
     document.getElementById('agentLabel').textContent = 'Error';
-    addMsg('agent', '⚠ 连接后端失败，请确认后端服务已启动。<br>运行：<code>start.bat</code>（端口8001）');
+    addMsg('agent', '⚠ 连接后端失败，请确认后端服务已启动。');
   }
 }
 </script>
